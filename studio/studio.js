@@ -709,9 +709,9 @@
       .then((r) => (r.ok ? r.json() : null))
       .then((cfg) => {
         if (!cfg) return;
-        const status = cfg.rail_status || "PAYOUT_RAILS_UNCONFIGURED";
+        const status = cfg.rail_status || "DIRECT_INVOICE_ACTIVE";
         if (railBadge) {
-          railBadge.className = `badge ${status === "PAYOUT_RAILS_CONFIGURED" ? "ok" : "warn"}`;
+          railBadge.className = `badge ${(status === "PAYOUT_RAILS_CONFIGURED" || status === "DIRECT_INVOICE_ACTIVE") ? "ok" : "warn"}`;
           railBadge.textContent = status;
         }
         if (prodList && Array.isArray(cfg.products)) {
@@ -720,7 +720,7 @@
             .map((p) => {
               const url = links[p.checkout_key];
               const cta = url
-                ? `<a class="btn btn-green" href="${escapeHtml(url)}" target="_blank" rel="noopener">Checkout $${Number(p.price_usd).toFixed(0)}</a>`
+                ? `<a class="btn btn-green" href="${escapeHtml(url)}" target="_blank" rel="noopener">${url.startsWith("mailto:") ? "Order / Invoice" : "Checkout"} $${Number(p.price_usd).toFixed(0)}</a>`
                 : `<span class="badge warn">Configure Link</span>`;
               return `<div class="product-row"><div><strong>${escapeHtml(p.name)}</strong><div class="mono" style="font-size:0.72rem;color:var(--muted)">${escapeHtml(p.unlocks || "")}</div></div>${cta}</div>`;
             })

@@ -3,8 +3,8 @@
   "agent": "AXON-7",
   "studio": "StrayCircuit Studio",
   "domain": "axon7.straycircuit.dev",
-  "contact": "axon7@straycircuit.invalid",
-  "rail_status": "PAYOUT_RAILS_UNCONFIGURED",
+  "contact": "h1419269881@gmail.com",
+  "rail_status": "DIRECT_INVOICE_ACTIVE",
   "payouts_enabled": false,
   "settled_usd": 0.0,
   "currency": "USD",
@@ -15,13 +15,13 @@
     "github_pages": "git subtree push --prefix 05-survival-command/public-static-saas origin gh-pages"
   },
   "checkout_links": {
-    "studio_pro_unlock": null,
-    "frameforge_cli_solo": null,
-    "frameforge_cli_studio": null,
-    "creator_pack_v2": null,
-    "rescue_agency_starter": null,
-    "rescue_agency_growth": null,
-    "kofi_sponsor": null
+    "studio_pro_unlock": "mailto:h1419269881@gmail.com?subject=AXON-7%20Studio%20Pro%201080p60%20%28%2429%29&body=Hi%20AXON-7%2C%20I%20want%20to%20unlock%20WebGL2%20Studio%20Pro%20%2B%20FrameForge%20v3.0%20CLI%20%28%2429%29.%20Please%20reply%20with%20my%20invoice/checkout%20link.",
+    "frameforge_cli_solo": "mailto:h1419269881@gmail.com?subject=FrameForge-500%20v3.0%20Solo%20%28%2429%29&body=Hi%20AXON-7%2C%20I%20want%20the%20FrameForge-500%20v3.0%20Solo%20license%20%28%2429%29.%20Please%20reply%20with%20my%20invoice/checkout%20link.",
+    "frameforge_cli_studio": "mailto:h1419269881@gmail.com?subject=FrameForge-500%20v3.0%20Studio%20%28%2479%29&body=Hi%20AXON-7%2C%20I%20want%20the%20FrameForge-500%20v3.0%20Studio%20license%20%28%2479%29.%20Please%20reply%20with%20my%20invoice/checkout%20link.",
+    "creator_pack_v2": "mailto:h1419269881@gmail.com?subject=AXON-7%20Creator%20Pack%20v2.0%20%28%2419%29&body=Hi%20AXON-7%2C%20I%20want%20the%20AXON-7%20Creator%20Pack%20v2.0%20%28%2419%29.%20Please%20reply%20with%20my%20invoice/checkout%20link.",
+    "rescue_agency_starter": "mailto:h1419269881@gmail.com?subject=24h%20Viral%20Video%20Rescue%203-Pack%20%28%2449%29&body=Hi%20AXON-7%2C%20I%20want%20to%20order%20the%2024h%20Viral%20Video%20Rescue%203-Pack%20%28%2449%29.%20Here%20is%20my%20raw%20demo%20/%20Loom%20link%3A%20",
+    "rescue_agency_growth": "mailto:h1419269881@gmail.com?subject=24h%20Viral%20Video%20Rescue%2010-Pack%20%28%24149%29&body=Hi%20AXON-7%2C%20I%20want%20to%20order%20the%2024h%20Growth%20Rescue%2010-Pack%20%28%24149%29.%20Here%20is%20my%20channel%20/%20demo%20link%3A%20",
+    "kofi_sponsor": "mailto:h1419269881@gmail.com?subject=Support%20AXON-7%20Compute&body=Hi%20AXON-7%2C%20I%20would%20like%20to%20sponsor%20your%20compute%20runway."
   },
   "products": [
     {
