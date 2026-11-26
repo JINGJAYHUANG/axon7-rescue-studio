@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AXON-7 FrameForge WebGL2 &amp; WebAudio Rescue Studio</title>
+  <link rel="stylesheet" href="studio.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <div>
+          <h1>AXON-7 // WEBGL2 VIDEO RESCUE STUDIO</h1>
+          <div class="brand-sub">STRAYCIRCUIT STUDIO &bull; ZERO-INSTALL GPU + WEBAUDIO ENGINE</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="badge warn" id="tier-badge">FREE 720P WATERMARKED MODE</span>
+        <button type="button" class="btn btn-green" id="open-checkout-btn">Unlock Pro 1080p60 ($29)</button>
+        <a class="btn btn-secondary" href="../index.html" id="back-portal-link">Command Hub</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Column 1: Source Input, WebGL2 Shader Grade, WebAudio Mastering -->
+    <section class="panel">
+      <div class="eyebrow">1 // INPUT &amp; WEBAUDIO + WEBGL2 CONTROLS</div>
+      <div class="dropzone" id="dropzone" tabindex="0">
+        <div><strong>Drop Any MP4 / WebM / MOV Here</strong></div>
+        <div class="mono" style="font-size:0.75rem;color:var(--muted);margin-top:4px">
+          100% browser-local GPU &amp; audio processing &mdash; zero upload required
+        </div>
+        <input type="file" id="file-input" accept="video/mp4,video/webm,video/quicktime" style="display:none">
+      </div>
+
+      <div class="btn-row" style="margin-top:10px">
+        <button type="button" class="btn" id="pick-file-btn">Choose Local Video</button>
+        <button type="button" class="btn btn-green" id="load-sample-btn">1-Click Sample Demo</button>
+      </div>
+      <div class="mono" id="source-status" style="font-size:0.75rem;color:var(--muted);margin-top:8px">
+        No clip loaded yet &mdash; click "1-Click Sample Demo" or drop any MP4.
+      </div>
+
+      <div class="control-group">
+        <div class="control-row">
+          <div class="control-head">
+            <span>3D LUT Color Grade</span>
+            <span class="val" id="val-lut-mix">85%</span>
+          </div>
+          <select id="lut-select" aria-label="Select 3D LUT preset">
+            <option value="CyberTealOLED">CyberTealOLED (3D LUT)</option>
+            <option value="CrispDaylightPop">CrispDaylightPop (3D LUT)</option>
+            <option value="MoodyTitanium">MoodyTitanium (3D LUT)</option>
+            <option value="WarmCinemaRoll">WarmCinemaRoll (3D LUT)</option>
+            <option value="HighContrastHook">HighContrastHook (3D LUT)</option>
+            <option value="NeonNightLab">NeonNightLab (3D LUT)</option>
+          </select>
+          <input type="range" id="lut-mix" min="0" max="1" step="0.05" value="0.85" style="margin-top:6px">
+          <div style="margin-top:6px">
+            <label class="mono" style="font-size:0.72rem;color:var(--muted)">Optional custom .cube LUT:</label>
+            <input type="file" id="cube-input" accept=".cube" style="font-size:0.72rem;margin-top:2px">
+          </div>
+        </div>
+
+        <div class="control-row">
+          <div class="control-head">
+            <span>OLED S-Curve Contrast</span>
+            <span class="val" id="val-contrast">1.22</span>
+          </div>
+          <input type="range" id="ctrl-contrast" min="0.8" max="1.6" step="0.02" value="1.22">
+          <div class="control-head" style="margin-top:6px">
+            <span>Saturation Boost</span>
+            <span class="val" id="val-sat">1.18</span>
+          </div>
+          <input type="range" id="ctrl-sat" min="0.7" max="1.6" step="0.02" value="1.18">
+          <div class="control-head" style="margin-top:6px">
+            <span>Micro-Sharpen (WebGL 3x3)</span>
+            <span class="val" id="val-sharp">0.55</span>
+          </div>
+          <input type="range" id="ctrl-sharp" min="0" max="1.2" step="0.05" value="0.55">
+        </div>
+
+        <div class="control-row">
+          <div class="control-head">
+            <span>9:16 Smart Framing (Zoom / Pan X)</span>
+            <span class="val" id="val-zoom">1.08x</span>
+          </div>
+          <input type="range" id="ctrl-zoom" min="1.0" max="1.8" step="0.02" value="1.08">
+          <input type="range" id="ctrl-pan" min="-0.4" max="0.4" step="0.02" value="0.0" style="margin-top:6px" aria-label="Horizontal pan">
+        </div>
+
+        <div class="control-row">
+          <div class="control-head">
+            <span>WebAudio Mastering Chain</span>
+            <span class="val" id="val-audio-mode">MASTERED</span>
+          </div>
+          <div class="mono" style="font-size:0.72rem;color:var(--muted);margin-bottom:6px">
+            80Hz HPF &rarr; +4.5dB @ 3.5kHz Presence &rarr; DynamicsCompressor &rarr; Makeup
+          </div>
+          <div class="btn-row" style="margin-bottom:8px">
+            <button type="button" class="btn btn-green" id="audio-ab-btn">Toggle Bypass / Mastered</button>
+            <button type="button" class="btn btn-secondary" id="play-pause-btn">Play / Pause</button>
+          </div>
+          <div class="meter-track"><div class="meter-fill" id="audio-meter-fill"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Column 2: Real-Time 9:16 WebGL2 Split-Wipe Viewport -->
+    <section class="panel">
+      <div class="eyebrow">2 // REAL-TIME 9:16 WEBGL2 SPLIT-WIPE PREVIEW</div>
+      <div class="stage-wrap" id="wipe-stage">
+        <canvas id="studio-canvas" width="720" height="1280"></canvas>
+        <div class="wipe-overlay">
+          <span class="wipe-label left">RAW INPUT</span>
+          <span class="wipe-label right">AXON-7 MASTERED</span>
+          <div class="wipe-line" id="wipe-line"></div>
+          <div class="wipe-handle" id="wipe-handle" title="Drag to compare Before / After">&harr;</div>
+        </div>
+      </div>
+      <div class="control-row" style="margin-top:10px">
+        <div class="control-head">
+          <span>Before / After Split Position</span>
+          <span class="val" id="val-wipe">50%</span>
+        </div>
+        <input type="range" id="ctrl-wipe" min="0" max="100" step="1" value="50">
+      </div>
+    </section>
+
+    <!-- Column 3: Kinetic Word-Pop Captions, Browser Export, License Unlock, Server M5 Rescue -->
+    <section class="panel">
+      <div class="eyebrow">3 // KINETIC CAPTIONS, EXPORT &amp; PRO UNLOCK</div>
+
+      <div class="control-row">
+        <div class="control-head">
+          <span>Kinetic Word-Pop Caption Overlay</span>
+          <label class="mono" style="font-size:0.74rem"><input type="checkbox" id="toggle-captions" checked> Enabled</label>
+        </div>
+        <textarea id="caption-text" rows="2">STOP LAUNCHING WITH SILENT 720P LOOM FOOTAGE</textarea>
+      </div>
+
+      <div class="control-row" style="margin-top:10px">
+        <div class="eyebrow" style="margin-bottom:4px">BROWSER MEDIARECORDER EXPORT</div>
+        <p class="mono" style="font-size:0.74rem;color:var(--muted);margin:0 0 8px">
+          Free exports render 720p watermarked WebM/MP4. Enter a valid AXON7-PRO license to unlock unwatermarked 1080p60 export.
+        </p>
+        <div class="btn-row">
+          <button type="button" class="btn btn-green" id="export-btn">Record &amp; Export Video</button>
+          <a class="btn" id="download-export-link" style="display:none" download="axon7-studio-rescue.webm">Download Recording</a>
+        </div>
+        <div class="mono" id="export-status" style="font-size:0.74rem;color:var(--cyan);margin-top:8px"></div>
+      </div>
+
+      <div class="control-row" style="margin-top:10px">
+        <div class="eyebrow" style="margin-bottom:4px">LICENSE KEY VERIFIER</div>
+        <div class="btn-row">
+          <input type="text" id="license-key-input" placeholder="AXON7-PRO-ALL-..." style="flex:1">
+          <button type="button" class="btn" id="verify-license-btn">Unlock Pro</button>
+        </div>
+        <div class="mono" id="license-status" style="font-size:0.74rem;color:var(--muted);margin-top:6px">
+          Mode: Free 720p Preview
+        </div>
+      </div>
+
+      <div class="control-row" style="margin-top:10px">
+        <div class="eyebrow" style="margin-bottom:4px">APPLE M5 METAL BACKEND RESCUE (LOCAL :8707)</div>
+        <p class="mono" style="font-size:0.74rem;color:var(--muted);margin:0 0 8px">
+          When running on localhost:8707, send your clip to POST /api/rescue-clip for full FrameForge v3.0 neural mastering.
+        </p>
+        <button type="button" class="btn" id="server-rescue-btn">Run M5 Fast-Web Rescue on Uploaded Clip</button>
+        <div class="mono" id="server-rescue-status" style="font-size:0.74rem;color:var(--muted);margin-top:8px"></div>
+        <video id="server-rescue-player" controls playsinline style="display:none;width:100%;max-height:280px;margin-top:8px;border-radius:8px;background:#000"></video>
+      </div>
+    </section>
+  </main>
+
+  <!-- Checkout Modal -->
+  <div class="modal-backdrop" id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <h2 id="checkout-title" style="margin:0;font-size:1.15rem">AXON-7 Instant Commercial Checkout</h2>
+        <button type="button" class="btn btn-secondary" id="close-checkout-btn">Close</button>
+      </div>
+      <div class="badge warn" id="rail-badge" style="margin-bottom:12px">PAYOUT_RAILS_UNCONFIGURED</div>
+      <div id="checkout-products-list"></div>
+      <p class="mono" style="font-size:0.74rem;color:var(--muted);margin-top:10px">
+        Contact: axon7@straycircuit.invalid &bull; Configure live Stripe/LemonSqueezy URLs in LAUNCH_IGNITION.json before public launch.
+      </p>
+    </div>
+  </div>
+
+  <video id="source-video" playsinline loop crossorigin="anonymous" style="display:none"></video>
+  <canvas id="gl-canvas" width="720" height="1280" style="display:none"></canvas>
+  <script src="luts/luts_bundle.js"></script>
+  <script src="studio.js"></script>
+</body>
+</html>

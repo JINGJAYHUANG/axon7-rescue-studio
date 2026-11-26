@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AXON-7 FrameWorks — 24-Hour Viral Video Rescue Audit</title>
+  <style>
+    :root {
+      --bg: #07090e;
+      --panel: #0f1420;
+      --panel-2: #141b2b;
+      --border: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --cyan: #22d3ee;
+      --emerald: #34d399;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      background: radial-gradient(circle at top right, #0f172a 0%, var(--bg) 60%);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 32px 20px 64px;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 28px;
+    }
+    .brand { font-weight: 800; letter-spacing: 0.08em; font-size: 0.9rem; color: var(--cyan); text-transform: uppercase; }
+    .pill {
+      background: rgba(34, 211, 238, 0.12); border: 1px solid rgba(34, 211, 238, 0.35);
+      color: var(--cyan); padding: 5px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+    }
+    .hero {
+      display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: center;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 28px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 760px) { .hero { grid-template-columns: 1fr; text-align: center; } }
+    .gauge { position: relative; width: 176px; height: 176px; margin: 0 auto; }
+    .gauge svg { transform: rotate(-90deg); }
+    .gauge-center {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .gauge-num { font-size: 2.5rem; font-weight: 800; color: #fbbf24; line-height: 1; }
+    .gauge-sub { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+    h1 { margin: 0 0 8px; font-size: 1.75rem; line-height: 1.2; }
+    .meta-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px;
+    }
+    .meta-box {
+      background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+    }
+    .meta-box .lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; }
+    .meta-box .val { font-size: 0.98rem; font-weight: 700; margin-top: 2px; }
+    .section-title { font-size: 1.18rem; font-weight: 700; margin: 30px 0 14px; display: flex; align-items: center; gap: 10px; }
+    .killers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .killer-card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px;
+    }
+    .killer-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .killer-head h3 { margin: 0; font-size: 1rem; }
+    .target { font-size: 0.76rem; color: var(--muted); margin-top: 3px; }
+    .badge {
+      padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+    }
+    .sev-pass { background: rgba(52, 211, 153, 0.14); color: var(--emerald); border: 1px solid rgba(52, 211, 153, 0.35); }
+    .sev-warn { background: rgba(251, 191, 36, 0.14); color: var(--amber); border: 1px solid rgba(251, 191, 36, 0.35); }
+    .sev-crit { background: rgba(251, 113, 133, 0.16); color: var(--rose); border: 1px solid rgba(251, 113, 133, 0.4); }
+    .metric-line { display: flex; justify-content: space-between; align-items: baseline; margin: 12px 0 6px; }
+    .measured { font-size: 1.3rem; font-weight: 800; }
+    .measured small { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+    .weight { font-size: 0.76rem; color: var(--muted); }
+    .bar-track { height: 7px; background: #1e293b; border-radius: 999px; overflow: hidden; margin-bottom: 10px; }
+    .bar-fill { height: 100%; border-radius: 999px; }
+    .bar-fill.sev-pass { background: var(--emerald); border: none; }
+    .bar-fill.sev-warn { background: var(--amber); border: none; }
+    .bar-fill.sev-crit { background: var(--rose); border: none; }
+    .summary { font-size: 0.86rem; color: #cbd5e1; margin: 0 0 8px; }
+    .fix { font-size: 0.8rem; color: var(--cyan); background: rgba(34, 211, 238, 0.08); padding: 8px 10px; border-radius: 8px; }
+    .tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-top: 12px; }
+    .tier-card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 22px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .tier-card.featured {
+      border-color: rgba(34, 211, 238, 0.55);
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.08) 0%, var(--panel) 55%);
+    }
+    .tier-tag {
+      display: inline-block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--cyan); font-weight: 700; margin-bottom: 6px;
+    }
+    .tier-card h3 { margin: 0 0 8px; font-size: 1.2rem; }
+    .price { font-size: 2.1rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .price span { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+    .tier-card ul { padding-left: 18px; margin: 0 0 18px; color: #cbd5e1; font-size: 0.9rem; }
+    .tier-card li { margin-bottom: 6px; }
+    .cta-btn {
+      display: block; text-align: center; text-decoration: none; font-weight: 700;
+      background: var(--cyan); color: #05111a; padding: 12px 16px; border-radius: 10px;
+    }
+    .provider { text-align: center; font-size: 0.76rem; color: var(--muted); margin-top: 8px; }
+    footer { margin-top: 34px; font-size: 0.78rem; color: var(--muted); text-align: center; border-top: 1px solid var(--border); padding-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">AXON-7 FrameWorks // 24-Hour Viral Video Rescue</div>
+      <div class="pill">Audited Clip: 01-viral-scout/raw_footage/raw_05.mp4</div>
+    </header>
+
+    <section class="hero">
+      <div class="gauge">
+        <svg width="176" height="176" viewBox="0 0 176 176">
+          <circle cx="88" cy="88" r="68" stroke="#1e293b" stroke-width="14" fill="none" />
+          <circle cx="88" cy="88" r="68" stroke="#fbbf24" stroke-width="14" fill="none"
+                  stroke-dasharray="427.26" stroke-dashoffset="114.08" stroke-linecap="round" />
+        </svg>
+        <div class="gauge-center">
+          <div class="gauge-num">73.3</div>
+          <div class="gauge-sub">Viral Readiness</div>
+        </div>
+      </div>
+
+      <div>
+        <h1>B/C — Leaking Retention</h1>
+        <p style="margin:0;color:#cbd5e1;">
+          Detected <strong>2 critical</strong> and <strong>1 warning</strong>
+          retention killers. Running this asset through the FrameForge 10-Stage Rescue lifts Viral Readiness from
+          <strong>73.3 &rarr; 91.3/100</strong> within 24 hours.
+        </p>
+        <div class="meta-grid">
+          <div class="meta-box"><div class="lbl">Resolution</div><div class="val">1920x1080</div></div>
+          <div class="meta-box"><div class="lbl">Frame Rate</div><div class="val">29.97 fps</div></div>
+          <div class="meta-box"><div class="lbl">Duration</div><div class="val">12.55 s</div></div>
+          <div class="meta-box"><div class="lbl">Audio Loudness</div><div class="val">-20.1 LUFS</div></div>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="section-title">7-Point Automated Retention-Killer Autopsy</h2>
+    <section class="killers-grid">
+      
+            <article class="killer-card">
+              <div class="killer-head">
+                <div>
+                  <h3>1. Opening 1.5s Motion Deficit</h3>
+                  <div class="target">Target: &gt;= 6.50 luma MAD &amp; &lt;= 0.15s lead silence</div>
+                </div>
+                <span class="badge sev-pass">PASS · 100/100</span>
+              </div>
+              <div class="metric-line">
+                <span class="measured">10.092 <small>MAD luma/frame</small></span>
+                <span class="weight">Weight 18%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sev-pass" style="width:100.0%"></div></div>
+              <p class="summary">Opening 1.5s frame motion averages 10.09 luma units with 0.05s lead-in silence.</p>
+              <div class="fix"><strong>Fix:</strong> Stage 1 Head Trimmer + Stage 7 0-1.5s Punch-In Hook &amp; Sub-Drop</div>
+            </article>
+            
+            <article class="killer-card">
+              <div class="killer-head">
+                <div>
+                  <h3>2. Dead-Air Pauses &amp; Silence</h3>
+                  <div class="target">Target: &lt;= 8% silent frames &amp; &lt;= 0.45s max pause</div>
+                </div>
+                <span class="badge sev-pass">PASS · 99/100</span>
+              </div>
+              <div class="metric-line">
+                <span class="measured">0.05 <small>sec dead air</small></span>
+                <span class="weight">Weight 15%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sev-pass" style="width:99.2%"></div></div>
+              <p class="summary">0.05s silent frames (0.4% of runtime); longest pause 0.05s.</p>
+              <div class="fix"><strong>Fix:</strong> Stage 1 Optical+RMS Dead-Air Auto-Trim + Foley Bed Layering</div>
+            </article>
+            
+            <article class="killer-card">
+              <div class="killer-head">
+                <div>
+                  <h3>3. Loudness Gap vs -14 LUFS</h3>
+                  <div class="target">Target: -16.5 to -12.0 LUFS, True Peak &lt;= -1.0 dBTP</div>
+                </div>
+                <span class="badge sev-warn">WARN · 61/100</span>
+              </div>
+              <div class="metric-line">
+                <span class="measured">6.1 <small>LU offset from -14</small></span>
+                <span class="weight">Weight 15%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sev-warn" style="width:60.9%"></div></div>
+              <p class="summary">Measured -20.1 LUFS (gap 6.1 LU from -14.0 target; peak -3.8 dBFS).</p>
+              <div class="fix"><strong>Fix:</strong> Stage 10 Psychoacoustic Chain (HPF 80Hz -&gt; Comp -&gt; Exciter -&gt; R128 -14 LUFS)</div>
+            </article>
+            
+            <article class="killer-card">
+              <div class="killer-head">
+                <div>
+                  <h3>4. Low Laplacian Sharpness</h3>
+                  <div class="target">Target: &gt;= 180.0 micro-edge variance</div>
+                </div>
+                <span class="badge sev-pass">PASS · 100/100</span>
+              </div>
+              <div class="metric-line">
+                <span class="measured">338.01 <small>Laplacian var</small></span>
+                <span class="weight">Weight 14%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sev-pass" style="width:100.0%"></div></div>
+              <p class="summary">Frame edge-detail variance measured 338.0 (soft compression/upscale blur reduces scroll stop).</p>
+              <div class="fix"><strong>Fix:</strong> Stage 3 Lanczos4 1080x1920 Upscale + Stage 5 Guided Unsharp + CAS=0.65</div>
+            </article>
+            
+            <article class="killer-card">
+              <div class="killer-head">
+                <div>
+                  <h3>5. Narrow Tonal Dynamic Range</h3>
+                  <div class="target">Target: &gt;= 185 luma span &amp; &gt;= 48 RMS contrast</div>
+                </div>
+                <span class="badge sev-pass">PASS · 100/100</span>
+              </div>
+              <div class="metric-line">
+                <span class="measured">190.5 <small>P98-P2 luma span</small></span>
+                <span class="weight">Weight 13%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sev-pass" style="width:99.7%"></div></div>
+              <p class="summary">P98-P2 luma span is 190.5/255 (RMS contrast 61.7); flat mids hurt mobile OLED pop.</p>
+              <div class="fix"><strong>Fix:</strong> Stage 4 Perceptual LAB-Space CLAHE + OLED 3D LUT Grade</div>
+            </article>
+            
+            <article class="killer-card">
+              <div class="killer-head">
+                <div>
+                  <h3>6. Sub-60fps Temporal Judder</h3>
+                  <div class="target">Target: Exact 60.0 fps &amp; &lt; 15% duplicate frames</div>
+                </div>
+                <span class="badge sev-crit">CRITICAL · 33/100</span>
+              </div>
+              <div class="metric-line">
+                <span class="measured">29.97 <small>fps</small></span>
+                <span class="weight">Weight 13%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sev-crit" style="width:33.3%"></div></div>
+              <p class="summary">Stream cadence is 29.97 fps (30000/1001), opening duplicate-frame ratio 0%.</p>
+              <div class="fix"><strong>Fix:</strong> Stage 2 Optical-Flow Stabilization + Stage 6 60fps Temporal Cadence Engine</div>
+            </article>
+            
+            <article class="killer-card">
+              <div class="killer-head">
+                <div>
+                  <h3>7. Aspect-Ratio Pillarboxing</h3>
+                  <div class="target">Target: Native 9:16 (1080x1920) with 0% black bars</div>
+                </div>
+                <span class="badge sev-crit">CRITICAL · 0/100</span>
+              </div>
+              <div class="metric-line">
+                <span class="measured">216.0 <small>% viewport waste</small></span>
+                <span class="weight">Weight 12%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sev-crit" style="width:4.0%"></div></div>
+              <p class="summary">Source frame is 1920x1080 (ratio 1.78 vs 0.56 native 9:16) with 0.0% baked border bars.</p>
+              <div class="fix"><strong>Fix:</strong> Stage 3 Smart Subject-Track 9:16 Reframe + Blurred-Glass Ambient Fill</div>
+            </article>
+            
+    </section>
+
+    <h2 class="section-title">Instant 24-Hour Rescue Checkout — Recommended: $49 Starter 3-Pack (24h hook + audio + LUT rescue)</h2>
+    <section class="tiers-grid">
+      
+            <div class="tier-card ">
+              <div class="tier-top">
+                <span class="tier-tag">24 Hours</span>
+                <h3>Starter 3-Pack Rescue</h3>
+                <div class="price">$49<span> USD</span></div>
+              </div>
+              <ul><li>Up to 3 clips rescued through FrameForge 10-Stage Pipeline</li><li>1080x1920 60fps native vertical + -14 LUFS EBU R128 audio</li><li>0-1.5s scroll-stopper hook punch + kinetic captions + 0.4s loop bridge</li></ul>
+              <a class="cta-btn" href="../../index.html#storefront" target="_blank" rel="noopener">
+                Book via Stripe Checkout — $49
+              </a>
+              <div class="provider">Stripe Checkout (Instant Settlement) · AXON-7 FrameWorks</div>
+            </div>
+            
+            <div class="tier-card featured">
+              <div class="tier-top">
+                <span class="tier-tag">24 Hours Priority</span>
+                <h3>Growth 10-Pack Agency Sprint</h3>
+                <div class="price">$149<span> USD</span></div>
+              </div>
+              <ul><li>10 clips rescued + custom OLED 3D LUT calibration</li><li>Side-by-side Before/After A/B Wipe Proof MP4s + High-CTR Cover PNGs</li><li>Includes AXON-7 Viral Creator Pack v1.0 ($19 value) FREE</li></ul>
+              <a class="cta-btn" href="../../index.html#storefront" target="_blank" rel="noopener">
+                Book via Stripe Checkout — $149
+              </a>
+              <div class="provider">Stripe Checkout (Instant Settlement) · AXON-7 FrameWorks</div>
+            </div>
+            
+    </section>
+
+    <footer>
+      Generated by AXON-7 FrameWorks Video Rescue Auditor &middot; Contact: axon7@straycircuit.invalid &middot; Instant Stripe Checkout Settlement
+    </footer>
+  </div>
+</body>
+</html>

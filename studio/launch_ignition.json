@@ -1,0 +1,73 @@
+{
+  "version": "3.0.0",
+  "agent": "AXON-7",
+  "studio": "StrayCircuit Studio",
+  "domain": "axon7.straycircuit.dev",
+  "contact": "axon7@straycircuit.invalid",
+  "rail_status": "PAYOUT_RAILS_UNCONFIGURED",
+  "payouts_enabled": false,
+  "settled_usd": 0.0,
+  "currency": "USD",
+  "notice": "Zero PII & zero fabricated earnings. Paste live Stripe Payment Links, LemonSqueezy, Gumroad, or Ko-fi https:// URLs before public distribution.",
+  "deploy_targets": {
+    "cloudflare_pages": "npx wrangler pages deploy 05-survival-command/public-static-saas --project-name axon7-rescue-studio",
+    "netlify_drop": "npx netlify-cli deploy --prod --dir 05-survival-command/public-static-saas",
+    "github_pages": "git subtree push --prefix 05-survival-command/public-static-saas origin gh-pages"
+  },
+  "checkout_links": {
+    "studio_pro_unlock": null,
+    "frameforge_cli_solo": null,
+    "frameforge_cli_studio": null,
+    "creator_pack_v2": null,
+    "rescue_agency_starter": null,
+    "rescue_agency_growth": null,
+    "kofi_sponsor": null
+  },
+  "products": [
+    {
+      "sku": "PRO",
+      "name": "AXON-7 WebGL Studio Pro + FrameForge-500 v3.0 Solo",
+      "price_usd": 29.0,
+      "settlement_tier": "T+2",
+      "checkout_key": "frameforge_cli_solo",
+      "unlocks": "Unwatermarked 1080p60 WebGL export + frameforge-pro-v3.0.zip CLI"
+    },
+    {
+      "sku": "STUDIO",
+      "name": "FrameForge-500 v3.0 Studio Commercial License",
+      "price_usd": 79.0,
+      "settlement_tier": "T+2",
+      "checkout_key": "frameforge_cli_studio",
+      "unlocks": "Multi-seat agency license + full source + 12 LUTs"
+    },
+    {
+      "sku": "CREATOR_PACK",
+      "name": "AXON-7 Viral Creator Pack v2.0 (24 SFX + 8 Stems + 12 LUTs)",
+      "price_usd": 19.0,
+      "settlement_tier": "T+7",
+      "checkout_key": "creator_pack_v2",
+      "unlocks": "axon7-viral-creator-pack-v2.0.zip + FCPXML/SRT/CapCut templates"
+    },
+    {
+      "sku": "RESCUE_STARTER",
+      "name": "24h Viral Video Rescue \u2014 Starter 3-Pack",
+      "price_usd": 49.0,
+      "settlement_tier": "T+2",
+      "checkout_key": "rescue_agency_starter",
+      "unlocks": "3 full-bleed 1080p60 Neural Rescue masters + A/B wipe proofs"
+    },
+    {
+      "sku": "RESCUE_GROWTH",
+      "name": "24h Viral Video Rescue \u2014 Growth 10-Pack",
+      "price_usd": 149.0,
+      "settlement_tier": "T+2",
+      "checkout_key": "rescue_agency_growth",
+      "unlocks": "10 full-bleed masters + custom OLED LUT + Creator Pack v2.0"
+    }
+  ],
+  "license_verification": {
+    "prefix": "AXON7-PRO",
+    "endpoint": "/api/verify-license",
+    "generator_cli": "05-survival-command/.venv/bin/python 05-survival-command/server/license_tool.py issue --sku PRO --order ORD-001"
+  }
+}
